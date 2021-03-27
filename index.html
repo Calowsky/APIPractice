@@ -1,0 +1,94 @@
+<!doctype html>
+<html>
+<head>
+	<title>Caleb API</title>
+	<meta charset="utf-8"/>
+	<style>          
+		header {background-color: Dodgerblue;}
+		body {background-color: grey;}
+		h1 { text-align: center }
+	  
+		.info { text-align: center }
+		
+		img {
+		  display: block;
+		  margin-left: auto;
+		  margin-right: auto;
+		}
+  </style>
+
+	<script>
+		function getdata() {
+			/* Step 1: Make instance of request object...
+			...to make HTTP request after page is loaded*/
+			request = new XMLHttpRequest();
+			console.log("1 - request object created");
+ 
+			// Step 2: Set the URL for the AJAX request to be the JSON file
+ 
+		request.open("GET", "https://api.polygon.io/v1/open-close/AAPL/2020-10-14?unadjusted=true&apiKey=LpntzzSXoxOw_bFLfepTEmWqrQidXyKL", true)
+
+			console.log("2 - opened request file");
+ 
+			// Step 3: set up event handler/callback
+
+			request.onreadystatechange = function() {
+				 
+				if (request.readyState == 4 && request.status == 200) {
+
+					// Step 5: wait for done + success
+					console.log("5 - response received");
+					result = request.responseText;
+					//alert(result);
+					document.getElementById("data").innerHTML = result;
+					mydata = JSON.parse(result);
+					
+					
+					document.getElementById("data").innerHTML = "Apple stocks today opened at: " + mydata["open"]  
+					 + "<br />" + "The high for Apple stocks today is " +  mydata["high"]
+					 + "<br />" + "The low for Apple stocks today is " +  mydata["low"]; 
+					
+				}
+				else if (request.readyState == 4 && request.status != 200) {
+
+					document.getElementById("data").innerHTML = "Something is wrong!  Check the logs to see where this went off the rails";
+
+				}
+
+				else if (request.readyState == 3) {
+
+					document.getElementById("data").innerHTML = "Too soon!  Try again";
+
+				}
+
+			}
+		// Step 4: fire off the HTTP request
+			request.send();
+			console.log("4 - Request sent");
+		}
+	</script>
+</head>
+
+
+<header>
+  <h1> Apple Stock Prices: </h1>     
+</header>
+
+<div class="info">
+
+<body onload="getdata()">
+
+	<div id="data">Loading...</div>
+	
+	<h1> The API I chose is a stock information API. I got information about </h1>
+	<h1> the current day's low and high price for apple stock. </h1>
+	<h1>  the website can be found at polygon.io, I found it by searching </h1>
+	<h1>  free stocks API online.</h1>
+	<h1> The options I used for the API request were to specify I wanted the low  </h1>
+	<h1>  and high of the apple prices.</h1>
+	<h1>  This API would be very useful If I wanted to built a bot to </h1>
+	<h1>  buy and sell stocks based on the current day's prices. </h1>
+
+</div>
+</body>
+</html>
